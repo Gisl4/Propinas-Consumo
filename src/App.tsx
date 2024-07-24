@@ -1,17 +1,18 @@
 import MenuItem from "./components/MenuItem";
 import OrderContents from "./components/OrderContents";
 import OrderTotals from "./components/OrderTotals";
+import { TipPercentageForm } from "./components/TipPercentageForm";
 import { menuItems } from "./data/db";
 import userOrder from "./hooks/useOrder";
 
 function App() {
   
-  const { order, addItem, removeItem } = userOrder ()
+  const { order, tip, setTip, addItem, removeItem, placeOrder } = userOrder ()
 
   return (
     <>
      <header className="bg-blue-400 py-5">
-        <h1 className="text-center text-4xl font-black">Propinas y Consumo</h1>
+        <h1 className="text-center text-4xl font-black">Consumo y Propinas</h1>
      </header>
 
      <main className="max-w-7xl mx-auto py-20 grid md:grid-cols-2">
@@ -29,12 +30,25 @@ function App() {
         </div>
 
         <div className="border border-dashed border-slate-300 p-5 rounded-lg space-y-10">
-          <OrderContents 
-            order={order}
-            removeItem={removeItem}
-          />
-
-          <OrderTotals />
+          {order.length > 0 ? (
+            <>
+                <OrderContents 
+                  order={order}
+                  removeItem={removeItem}
+                />
+                <TipPercentageForm 
+                  setTip={setTip}
+                  tip={tip}
+                />
+                <OrderTotals
+                  order={order}
+                  tip={tip}
+                  placeOrder={placeOrder}
+                />
+            </>
+          ) : (
+            <p className="text-center">La orden esta vacia</p>
+          )}
           
         </div>
 
